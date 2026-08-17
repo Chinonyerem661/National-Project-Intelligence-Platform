@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
-import { Fraunces, Public_Sans, IBM_Plex_Mono } from "next/font/google";
+import { Newsreader, Public_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { Sidebar } from "@/components/shell/Sidebar";
 import { PHOTOS, verdictOf, isUndecided } from "@/lib/data";
 
-/* Fraunces carries the display type — a serif with sharp, flared terminals
-   that reads as considered and a little characterful rather than another
-   flat grotesque, without tipping into decorative. Public Sans is the US
-   federal design-system face: institutional, quiet, and not the Inter that
-   every dashboard defaults to. Plex Mono handles anything measured —
-   coordinates, chainage, contract references. */
-const fraunces = Fraunces({
+/* Newsreader carries the display type — a serif built for serious long-form
+   reading, restrained rather than decorative, the register of an official
+   report rather than a product landing page. Public Sans is the US federal
+   design-system face: institutional, quiet, and not the Inter that every
+   dashboard defaults to. Plex Mono handles anything measured — coordinates,
+   chainage, contract references. */
+const newsreader = Newsreader({
   subsets: ["latin"],
-  variable: "--font-fraunces",
+  variable: "--font-newsreader",
   weight: ["500", "600", "700"],
   style: ["normal", "italic"],
   display: "swap",
@@ -32,7 +32,19 @@ const plexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
+// Vercel injects VERCEL_PROJECT_PRODUCTION_URL (the stable production domain)
+// and VERCEL_URL (this specific deployment's URL, changes per-preview) at
+// build time. Preferring the production one means preview deployments still
+// resolve social-share images against the real domain rather than their own
+// throwaway URL. Falls back to localhost so `next build` never warns in dev.
+const siteUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : "http://localhost:3000";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "MoT National Project Intelligence Platform",
   description:
     "See how national transport projects are going, backed by photos from the site and where the money's going.",
@@ -42,7 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const flagged = PHOTOS.filter((p) => verdictOf(p) === "flagged" && isUndecided(p)).length;
 
   return (
-    <html lang="en-NG" className={`${fraunces.variable} ${publicSans.variable} ${plexMono.variable}`}>
+    <html lang="en-NG" className={`${newsreader.variable} ${publicSans.variable} ${plexMono.variable}`}>
       <head>
         {/* Photo placeholders come from an external CDN until real site
             photography is dropped into public/evidence — opening the

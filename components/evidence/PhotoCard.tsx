@@ -160,11 +160,11 @@ export function PhotoInspector({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Plate */}
-        <div className="relative flex min-h-70 items-center justify-center bg-ink-950 lg:min-h-0">
+        <div className="relative min-h-70 bg-ink-950 lg:min-h-0">
           <EvidenceImage
             scene={photo.scene}
             alt={`${photo.stage} at ${photo.location}`}
-            className="max-h-[60vh] w-full lg:max-h-[92vh]"
+            fit="contain"
             width={1400}
             height={933}
             priority

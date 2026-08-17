@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import clsx from "clsx";
 import { PHOTO_SOURCES, localUrl, remoteUrl } from "@/lib/images";
 import type { SceneId } from "@/lib/types";
@@ -8,12 +9,14 @@ import type { SceneId } from "@/lib/types";
 /**
  * Resolves a scene to a photograph, walking local file → photo CDN → plate.
  *
- * Plain <img> rather than next/image: sources are mixed local/remote, and it
- * keeps remote-pattern config out of next.config. The chain is probed with a
- * detached Image() before the visible <img> ever points at it — a same-origin
- * 404 for a missing local file resolves faster than hydration, so an onError
- * handler on the rendered element arrives too late to catch it. Swap to
- * next/image once photography is finalised locally.
+ * The chain is still probed with a detached Image() before anything renders
+ * — sources are mixed local/remote, and a same-origin 404 for a missing
+ * local file resolves faster than hydration, so an onError handler on the
+ * rendered element would arrive too late to catch it. Once a URL is
+ * resolved, it's handed to next/image (in `fill` mode, since every call site
+ * already wraps this in a sized, relatively-positioned container) so Vercel's
+ * Image Optimization — resizing, AVIF/WebP, edge caching — applies to the
+ * actual bytes served, rather than shipping the CDN's raw response untouched.
  *
  * Local and remote are probed in parallel rather than in sequence — the local
  * file almost never exists yet, so waiting out its 404 before even starting
@@ -49,6 +52,7 @@ export function EvidenceImage({
   priority,
   width = 800,
   height = 534,
+  fit = "cover",
 }: {
   scene: SceneId;
   alt: string;
@@ -57,6 +61,8 @@ export function EvidenceImage({
   priority?: boolean;
   width?: number;
   height?: number;
+  /** "cover" fills a fixed-aspect box (crops); "contain" letterboxes the whole frame — use for the inspector plate, where the full photograph matters more than a clean edge-to-edge crop. */
+  fit?: "cover" | "contain";
 }) {
   const source = PHOTO_SOURCES[scene];
   const cacheKey = `${scene}:${width}x${height}`;
@@ -120,14 +126,13 @@ export function EvidenceImage({
   }
 
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
+    <Image
       src={resolved}
       alt={alt}
-      sizes={sizes}
-      loading={priority ? "eager" : "lazy"}
-      decoding="async"
-      className={clsx("object-cover", className)}
+      fill
+      sizes={sizes ?? "100vw"}
+      priority={priority}
+      className={clsx(fit === "cover" ? "object-cover" : "object-contain", className)}
     />
   );
 }
