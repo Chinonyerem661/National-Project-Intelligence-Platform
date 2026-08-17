@@ -1,0 +1,137 @@
+@import "tailwindcss";
+
+@theme {
+  /* Ink — near-black carrying a faint green cast, so darks feel related to the
+     accent rather than generic slate. */
+  --color-ink-950: #0d1411;
+  --color-ink-900: #131c18;
+  --color-ink-800: #1d2823;
+  --color-ink-700: #2c3833;
+  --color-ink-600: #46534d;
+  --color-ink-500: #64716b;
+  --color-ink-400: #8b968f;
+  --color-ink-300: #b3bcb6;
+  --color-ink-200: #d5dad6;
+  --color-ink-100: #e8ebe8;
+
+  /* Surfaces */
+  --color-paper: #fbfbfa;
+  --color-surface: #ffffff;
+  --color-line: #e3e6e2;
+  --color-line-strong: #cdd2cd;
+
+  /* Moss — the Nigerian federal green, deepened for screen legibility.
+     Grounded in the client's own identity rather than picked for taste. */
+  --color-moss-700: #07533a;
+  --color-moss-600: #0b6b45;
+  --color-moss-500: #0f8a58;
+  --color-moss-400: #37a878;
+  --color-moss-100: #d7ebe1;
+  --color-moss-50: #eff7f3;
+
+  /* Status — drawn from site materials: laterite, ochre dust, oxidised steel. */
+  --color-clay-600: #a4552c;
+  --color-clay-500: #c26a3a;
+  --color-clay-50: #fbf0e9;
+  --color-ochre-600: #a07520;
+  --color-ochre-500: #c8952f;
+  --color-ochre-50: #fbf4e4;
+  --color-rust-600: #9c3730;
+  --color-rust-500: #bd473e;
+  --color-rust-50: #fbedeb;
+
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-sans: var(--font-public-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "SF Mono", monospace;
+
+  --radius-card: 4px;
+
+  /* Near-rectangular, hairline-first surfaces read as instrument, not app chrome —
+     shadows stay barely-there so weight and borders keep doing the work. */
+  --shadow-card: 0 1px 2px 0 rgba(13, 20, 17, 0.04);
+  --shadow-raised: 0 1px 2px 0 rgba(13, 20, 17, 0.04), 0 10px 28px -8px rgba(13, 20, 17, 0.09);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink-900);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.006em;
+    color: var(--color-ink-950);
+  }
+
+  /* Numbers must never shift width when they change — this is a data instrument. */
+  .tabular, table, .font-mono {
+    font-variant-numeric: tabular-nums;
+  }
+
+  ::selection {
+    background: var(--color-moss-100);
+    color: var(--color-moss-700);
+  }
+
+  *:focus-visible {
+    outline: 2px solid var(--color-moss-500);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* The signature device: a survey annotation strip. Uppercase mono, wide
+     tracking, hairline rule above. Used wherever the interface reports a
+     measured fact — coordinates, chainage, contract references, timestamps. */
+  .survey-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: 1;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--color-ink-400);
+  }
+
+  .survey-rule {
+    border-top: 1px solid var(--color-line);
+    padding-top: 0.625rem;
+  }
+
+  /* Diagonal hatch, borrowed from drawing-set conventions for "not yet issued". */
+  .hatch {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 5px,
+      rgba(255, 255, 255, 0.045) 5px,
+      rgba(255, 255, 255, 0.045) 6px
+    );
+  }
+
+  .scrim {
+    background: linear-gradient(
+      to top,
+      rgba(13, 20, 17, 0.92) 0%,
+      rgba(13, 20, 17, 0.62) 38%,
+      rgba(13, 20, 17, 0.08) 72%,
+      rgba(13, 20, 17, 0) 100%
+    );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
