@@ -11,49 +11,49 @@ export default function BudgetPage() {
 
   return (
     <>
-      <Topbar eyebrow="Finance" title="Disbursement ledger" />
+      <Topbar eyebrow="Finance" title="Payments" />
 
       <main className="px-6 py-7 lg:px-9">
         <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          <Stat label="Portfolio value" value={naira(value)} detail="Across 10 active contracts" />
+          <Stat label="Total budget" value={naira(value)} detail="Across 10 active projects" />
           <Stat
-            label="Released to date"
+            label="Paid so far"
             value={naira(spent)}
-            detail={`${pct(spent, value)}% of baseline`}
+            detail={`${pct(spent, value)}% of the total budget`}
             accent="moss"
           />
           <Stat
-            label="Remaining commitment"
+            label="Left to pay"
             value={naira(value - spent)}
-            detail="Unreleased against signed contracts"
+            detail="Still owed on signed contracts"
           />
           <Stat
-            label="Contracts overrunning"
+            label="Projects paid ahead of work"
             value={String(overrun.length)}
-            detail="Money released ahead of evidenced work"
+            detail="Money paid faster than work confirmed"
             accent={overrun.length ? "rust" : "moss"}
           />
         </section>
 
         <Card className="mt-8">
           <CardHead
-            title="Release against evidenced progress"
-            note="Variance beyond ±8 points triggers a ministry review under the delivery framework"
+            title="Payments vs. confirmed work"
+            note="A gap of more than 8% triggers a ministry review"
           />
           <div className="overflow-x-auto">
             <table className="w-full min-w-220 text-left">
               <thead>
                 <tr className="border-b border-line">
                   {[
-                    "Contract",
+                    "Project",
                     "Status",
-                    "Baseline",
-                    "Released",
+                    "Budget",
+                    "Paid",
                     "Remaining",
-                    "Utilised",
-                    "Progress",
-                    "Variance",
-                    "Evidence",
+                    "% paid",
+                    "% done",
+                    "Difference",
+                    "Photos",
                   ].map((h, i) => (
                     <th
                       key={h}
@@ -117,7 +117,7 @@ export default function BudgetPage() {
                         }`}
                       >
                         {variance > 0 ? "+" : ""}
-                        {variance}
+                        {variance}%
                       </td>
                       <td className="px-4 py-3.5 text-right font-mono text-[12px] tabular">
                         <span className="text-ink-700">{shots.length}</span>
@@ -130,7 +130,7 @@ export default function BudgetPage() {
               <tfoot>
                 <tr className="border-t-2 border-ink-200 bg-paper">
                   <td className="px-4 py-3.5 font-mono text-[10px] tracking-[0.11em] text-ink-500 uppercase">
-                    Portfolio
+                    Total
                   </td>
                   <td />
                   <td className="px-4 py-3.5 text-right font-mono text-[12.5px] font-medium text-ink-950 tabular">
@@ -153,9 +153,9 @@ export default function BudgetPage() {
         </Card>
 
         <p className="mt-4 max-w-2xl text-[12.5px] leading-relaxed text-ink-500">
-          Utilised is the share of the contract sum released. Progress is the share of physical work
-          supported by accepted site evidence. A positive variance means money has moved ahead of
-          verified delivery.
+          &ldquo;% paid&rdquo; is the share of the budget that&apos;s been paid out. &ldquo;% done&rdquo;
+          is the share of work confirmed by accepted site photos. A positive difference means the
+          project has been paid faster than the work has been confirmed.
         </p>
       </main>
     </>

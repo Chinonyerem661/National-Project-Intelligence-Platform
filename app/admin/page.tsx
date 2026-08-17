@@ -30,7 +30,7 @@ export default function AdminPage() {
 
   return (
     <>
-      <Topbar eyebrow="Administration" title="Platform control" />
+      <Topbar eyebrow="Settings" title="Manage the platform" />
 
       <main className="px-6 py-7 lg:px-9">
         <PolicyPanel policy={POLICY} />
@@ -38,13 +38,13 @@ export default function AdminPage() {
         <section className="mt-3 grid gap-3 lg:grid-cols-2">
           <Card>
             <CardHead
-              title="Evidence store"
-              note={`${PHOTOS.length} images retained for ${POLICY.retentionYears} years`}
+              title="Photo storage"
+              note={`${PHOTOS.length} photos kept for ${POLICY.retentionYears} years`}
             />
             <div className="p-5">
-              <div className="mb-5 rounded-sm border border-line bg-paper p-4">
+              <div className="mb-5 rounded-xl border border-line bg-paper p-4">
                 <div className="mb-2 flex items-baseline justify-between">
-                  <SurveyLabel>Object store usage</SurveyLabel>
+                  <SurveyLabel>Storage used</SurveyLabel>
                   <span className="font-mono text-[12.5px] text-ink-900 tabular">
                     {storageGb} GB / {POLICY.storageQuotaGb} GB
                   </span>
@@ -58,7 +58,7 @@ export default function AdminPage() {
                     <div className="mb-1.5 flex items-baseline justify-between">
                       <span className="text-[12.5px] text-ink-700">{r.region}</span>
                       <span className="font-mono text-[11.5px] text-ink-400 tabular">
-                        {r.gb} GB · {r.count} images
+                        {r.gb} GB · {r.count} photos
                       </span>
                     </div>
                     <Meter value={(r.gb / maxGb) * 100} tone="moss" height={4} />
@@ -70,8 +70,8 @@ export default function AdminPage() {
 
           <Card>
             <CardHead
-              title="Field device sync"
-              note={`${queued} images held in offline queues across ${DEVICES.filter((d) => d.queued > 0).length} devices`}
+              title="Photos waiting to upload"
+              note={`${queued} photos waiting on ${DEVICES.filter((d) => d.queued > 0).length} phones with no signal`}
             />
             <ul className="divide-y divide-line">
               {DEVICES.map((d) => (
@@ -97,15 +97,15 @@ export default function AdminPage() {
               ))}
             </ul>
             <p className="border-t border-line bg-paper px-5 py-3.5 text-[12.5px] leading-relaxed text-ink-600">
-              Capture continues without connectivity. Queued images sync on the next available
-              connection; nothing is lost in the field.
+              Photos can still be taken with no signal. They&apos;ll upload automatically once the
+              phone reconnects — nothing gets lost.
             </p>
           </Card>
         </section>
 
         <section className="mt-3 grid gap-3 lg:grid-cols-2">
           <Card>
-            <CardHead title="Users and roles" note={`${USERS.length} accounts provisioned`} />
+            <CardHead title="People with access" note={`${USERS.length} people can log in`} />
             <ul className="divide-y divide-line">
               {USERS.map((u) => (
                 <li key={u.id} className="flex items-center justify-between gap-4 px-5 py-3.5">
@@ -133,7 +133,7 @@ export default function AdminPage() {
           </Card>
 
           <Card>
-            <CardHead title="Integrations" note="Ministry systems exchanging data with the platform" />
+            <CardHead title="Connected systems" note="Other ministry systems that share data with this platform" />
             <ul className="divide-y divide-line">
               {INTEGRATIONS.map((i) => (
                 <li key={i.id} className="flex items-center justify-between gap-4 px-5 py-3.5">
@@ -160,8 +160,8 @@ export default function AdminPage() {
 
         <Card className="mt-3">
           <CardHead
-            title="Audit trail"
-            note="Immutable record of every write action taken through the platform"
+            title="Activity log"
+            note="A permanent record of everything that's changed on this platform"
           />
           <ul className="divide-y divide-line">
             {SEED_AUDIT.map((a) => (

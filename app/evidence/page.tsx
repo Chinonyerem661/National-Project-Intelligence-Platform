@@ -7,7 +7,7 @@ export default function EvidencePage() {
 
   return (
     <>
-      <Topbar eyebrow="Verification" title="Evidence review" />
+      <Topbar eyebrow="Site photos" title="Photos to review" />
       <main className="px-6 py-7 lg:px-9">
         <ReviewQueue initial={PHOTOS} projectNames={names} />
       </main>

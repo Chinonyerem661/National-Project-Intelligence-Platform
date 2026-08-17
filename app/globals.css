@@ -1,55 +1,57 @@
 @import "tailwindcss";
 
 @theme {
-  /* Ink — near-black carrying a faint green cast, so darks feel related to the
-     accent rather than generic slate. */
-  --color-ink-950: #0d1411;
-  --color-ink-900: #131c18;
-  --color-ink-800: #1d2823;
-  --color-ink-700: #2c3833;
-  --color-ink-600: #46534d;
-  --color-ink-500: #64716b;
-  --color-ink-400: #8b968f;
-  --color-ink-300: #b3bcb6;
-  --color-ink-200: #d5dad6;
-  --color-ink-100: #e8ebe8;
+  /* Ink — warmed from the original cool blackish-green to a soft warm charcoal
+     (a touch of brown, not blue) so the whole neutral scale feels inviting
+     rather than clinical. Still dark enough to carry the dark bands. */
+  --color-ink-950: #1b1613;
+  --color-ink-900: #26201b;
+  --color-ink-800: #372e26;
+  --color-ink-700: #4d4136;
+  --color-ink-600: #6c5f51;
+  --color-ink-500: #8c7d6c;
+  --color-ink-400: #a99c8b;
+  --color-ink-300: #c6bbac;
+  --color-ink-200: #ddd4c7;
+  --color-ink-100: #efe8de;
 
-  /* Surfaces */
-  --color-paper: #fbfbfa;
+  /* Surfaces — warm cream instead of cool gray, like paper rather than screen glass. */
+  --color-paper: #fdfaf5;
   --color-surface: #ffffff;
-  --color-line: #e3e6e2;
-  --color-line-strong: #cdd2cd;
+  --color-line: #ece3d6;
+  --color-line-strong: #d8cab5;
 
-  /* Moss — the Nigerian federal green, deepened for screen legibility.
-     Grounded in the client's own identity rather than picked for taste. */
-  --color-moss-700: #07533a;
-  --color-moss-600: #0b6b45;
-  --color-moss-500: #0f8a58;
-  --color-moss-400: #37a878;
-  --color-moss-100: #d7ebe1;
-  --color-moss-50: #eff7f3;
+  /* Moss — the Nigerian federal green, brightened a step from the original
+     institutional depth so it reads as fresh and welcoming rather than corporate. */
+  --color-moss-700: #0b6245;
+  --color-moss-600: #13845a;
+  --color-moss-500: #22a06e;
+  --color-moss-400: #57c093;
+  --color-moss-100: #daf3e5;
+  --color-moss-50: #f1faf5;
 
-  /* Status — drawn from site materials: laterite, ochre dust, oxidised steel. */
-  --color-clay-600: #a4552c;
-  --color-clay-500: #c26a3a;
-  --color-clay-50: #fbf0e9;
-  --color-ochre-600: #a07520;
-  --color-ochre-500: #c8952f;
-  --color-ochre-50: #fbf4e4;
-  --color-rust-600: #9c3730;
-  --color-rust-500: #bd473e;
-  --color-rust-50: #fbedeb;
+  /* Status — drawn from site materials: laterite, ochre dust, oxidised steel.
+     Already warm; lightened slightly so they read as friendly signals, not alarms. */
+  --color-clay-600: #a85a2f;
+  --color-clay-500: #d17c45;
+  --color-clay-50: #fdf1e7;
+  --color-ochre-600: #a67a1e;
+  --color-ochre-500: #dba33a;
+  --color-ochre-50: #fdf5e3;
+  --color-rust-600: #a13f34;
+  --color-rust-500: #c85246;
+  --color-rust-50: #fcedea;
 
   --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
   --font-sans: var(--font-public-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, "SF Mono", monospace;
 
-  --radius-card: 4px;
+  --radius-card: 12px;
 
-  /* Near-rectangular, hairline-first surfaces read as instrument, not app chrome —
-     shadows stay barely-there so weight and borders keep doing the work. */
-  --shadow-card: 0 1px 2px 0 rgba(13, 20, 17, 0.04);
-  --shadow-raised: 0 1px 2px 0 rgba(13, 20, 17, 0.04), 0 10px 28px -8px rgba(13, 20, 17, 0.09);
+  /* Softer, warmer-tinted shadows — still restrained, but surfaces now feel
+     gently lifted rather than merely outlined. */
+  --shadow-card: 0 1px 3px 0 rgba(58, 42, 26, 0.06);
+  --shadow-raised: 0 2px 4px 0 rgba(58, 42, 26, 0.06), 0 12px 28px -8px rgba(58, 42, 26, 0.14);
 }
 
 @layer base {
@@ -121,10 +123,10 @@
   .scrim {
     background: linear-gradient(
       to top,
-      rgba(13, 20, 17, 0.92) 0%,
-      rgba(13, 20, 17, 0.62) 38%,
-      rgba(13, 20, 17, 0.08) 72%,
-      rgba(13, 20, 17, 0) 100%
+      rgba(27, 22, 19, 0.92) 0%,
+      rgba(27, 22, 19, 0.62) 38%,
+      rgba(27, 22, 19, 0.08) 72%,
+      rgba(27, 22, 19, 0) 100%
     );
   }
 }

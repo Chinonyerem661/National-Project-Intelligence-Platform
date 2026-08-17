@@ -72,8 +72,8 @@ export function ReviewQueue({
     setLog((prev) =>
       [
         decision === "release"
-          ? `${photo.id} ${photo.publicRelease ? "withdrawn from" : "released to"} public portal`
-          : `${photo.id} ${decision === "approved" ? "accepted" : "rejected"} by I. Sule`,
+          ? `${photo.id} ${photo.publicRelease ? "hidden from" : "shown to"} the public`
+          : `${photo.id} ${decision === "approved" ? "approved" : "rejected"} by I. Sule`,
         ...prev,
       ].slice(0, 6),
     );
@@ -88,10 +88,10 @@ export function ReviewQueue({
   };
 
   const FILTERS: { id: FilterId; label: string; n: number; accent: string }[] = [
-    { id: "flagged", label: "Failed verification", n: counts.flagged, accent: "bg-rust-500" },
+    { id: "flagged", label: "Flagged", n: counts.flagged, accent: "bg-rust-500" },
     { id: "review", label: "Needs review", n: counts.review, accent: "bg-ochre-500" },
-    { id: "pending", label: "Awaiting acceptance", n: counts.pending, accent: "bg-ink-800" },
-    { id: "all", label: "All evidence", n: counts.all, accent: "bg-ink-300" },
+    { id: "pending", label: "Waiting to be checked", n: counts.pending, accent: "bg-ink-800" },
+    { id: "all", label: "All photos", n: counts.all, accent: "bg-ink-300" },
   ];
 
   return (
@@ -104,11 +104,11 @@ export function ReviewQueue({
             onClick={() => setFilter(f.id)}
             aria-pressed={filter === f.id}
             className={clsx(
-              "rounded-sm border bg-surface p-5 text-left shadow-(--shadow-card) transition-colors",
+              "rounded-xl border bg-surface p-5 text-left shadow-(--shadow-card) transition-colors",
               filter === f.id ? "border-ink-800" : "border-line hover:border-line-strong",
             )}
           >
-            <div className={clsx("mb-4 h-0.75 w-7 rounded-[1px]", f.accent)} />
+            <div className={clsx("mb-4 h-0.75 w-7 rounded-full", f.accent)} />
             <p className="font-display text-[27px] leading-none font-semibold tracking-[-0.008em] text-ink-950 tabular">
               {f.n}
             </p>
@@ -118,8 +118,8 @@ export function ReviewQueue({
       </div>
 
       {log.length > 0 ? (
-        <div className="mt-3 rounded-sm border border-moss-100 bg-moss-50 px-5 py-3.5">
-          <SurveyLabel className="mb-2">Recorded to audit trail</SurveyLabel>
+        <div className="mt-3 rounded-xl border border-moss-100 bg-moss-50 px-5 py-3.5">
+          <SurveyLabel className="mb-2">Recent decisions</SurveyLabel>
           <ul className="space-y-1">
             {log.map((entry, i) => (
               <li key={i} className="font-mono text-[11.5px] text-moss-700 tabular">
@@ -133,9 +133,9 @@ export function ReviewQueue({
       <Card className="mt-3">
         <div className="flex items-center justify-between gap-4 border-b border-line px-5 py-4">
           <div>
-            <h2 className="text-[15px] leading-tight">Review queue</h2>
+            <h2 className="text-[15px] leading-tight">Photos to check</h2>
             <p className="mt-1 text-[12.5px] text-ink-500">
-              Every adjudication is written to the immutable audit trail
+              Every decision is saved automatically, so nothing gets lost
             </p>
           </div>
           <span className="font-mono text-[11.5px] text-ink-400 tabular">
@@ -146,8 +146,8 @@ export function ReviewQueue({
         {visible.length === 0 ? (
           <EmptyState
             icon={<CheckCircle2 className="size-4 text-moss-600" />}
-            title="Queue clear"
-            body="No evidence matches this filter. Switch filters to review accepted images."
+            title="All done!"
+            body="No photos match this filter. Try a different tab above."
           />
         ) : (
           <ul className="divide-y divide-line">
@@ -164,17 +164,17 @@ export function ReviewQueue({
                   <button
                     type="button"
                     onClick={() => setOpen(photo)}
-                    className="relative w-full shrink-0 overflow-hidden rounded-sm bg-ink-900 sm:w-42"
+                    className="relative w-full shrink-0 overflow-hidden rounded-xl bg-ink-900 sm:w-42"
                     style={{ aspectRatio: "4 / 3" }}
-                    aria-label={`Inspect ${photo.id}`}
+                    aria-label={`View photo ${photo.id}`}
                   >
                     <EvidenceImage
                       scene={photo.scene}
                       alt={`${photo.stage} at ${photo.location}`}
                       className="size-full"
                       sizes="200px"
-                      width={800}
-                      height={600}
+                      width={340}
+                      height={255}
                     />
                   </button>
 
@@ -233,23 +233,23 @@ export function ReviewQueue({
                       <button
                         type="button"
                         onClick={() => decide(photo, "approved")}
-                        className="rounded-sm bg-moss-600 px-3.5 py-1.75 text-[12.5px] font-medium text-white transition hover:bg-moss-700"
+                        className="rounded-xl bg-moss-600 px-3.5 py-1.75 text-[12.5px] font-medium text-white transition hover:bg-moss-700"
                       >
                         Accept
                       </button>
                       <button
                         type="button"
                         onClick={() => decide(photo, "rejected")}
-                        className="rounded-sm border border-line-strong px-3.5 py-1.75 text-[12.5px] font-medium text-rust-600 transition hover:border-rust-500/40 hover:bg-rust-50"
+                        className="rounded-xl border border-line-strong px-3.5 py-1.75 text-[12.5px] font-medium text-rust-600 transition hover:border-rust-500/40 hover:bg-rust-50"
                       >
                         Reject
                       </button>
                       <button
                         type="button"
                         onClick={() => setOpen(photo)}
-                        className="rounded-sm border border-line px-3.5 py-1.75 text-[12.5px] text-ink-600 transition hover:bg-surface"
+                        className="rounded-xl border border-line px-3.5 py-1.75 text-[12.5px] text-ink-600 transition hover:bg-surface"
                       >
-                        Inspect
+                        View details
                       </button>
                     </div>
                   </div>

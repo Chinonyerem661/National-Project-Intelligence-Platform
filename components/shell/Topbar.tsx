@@ -26,15 +26,15 @@ export function Topbar({
             <Search className="pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 text-ink-400" />
             <input
               type="search"
-              placeholder="Search contracts"
-              aria-label="Search contracts"
-              className="w-52 rounded-sm border border-line bg-surface py-1.75 pr-3 pl-8 text-[12.5px] text-ink-800 placeholder:text-ink-400 focus:border-line-strong focus:outline-none"
+              placeholder="Search projects"
+              aria-label="Search projects"
+              className="w-52 rounded-xl border border-line bg-surface py-1.75 pr-3 pl-8 text-[12.5px] text-ink-800 placeholder:text-ink-400 focus:border-line-strong focus:outline-none"
             />
           </div>
           <button
             type="button"
             aria-label="Notifications"
-            className="relative rounded-sm border border-line bg-surface p-2 text-ink-500 transition hover:text-ink-800"
+            className="relative rounded-xl border border-line bg-surface p-2 text-ink-500 transition hover:text-ink-800"
           >
             <Bell className="size-3.5" />
             <span className="absolute top-1.5 right-1.5 size-1.5 rounded-full bg-rust-500" />

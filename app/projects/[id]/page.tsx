@@ -44,7 +44,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
           href="/projects"
           className="mb-6 inline-flex items-center gap-1.5 text-[12.5px] text-ink-500 transition hover:text-ink-900"
         >
-          <ArrowLeft className="size-3.5" /> All contracts
+          <ArrowLeft className="size-3.5" /> All projects
         </Link>
 
         <div className="grid gap-3 lg:grid-cols-[1fr_320px]">
@@ -60,7 +60,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
 
               <div className="mt-5">
                 <div className="mb-2 flex items-baseline justify-between">
-                  <SurveyLabel>Physical progress, evidenced</SurveyLabel>
+                  <SurveyLabel>Work completed, confirmed by photos</SurveyLabel>
                   <span className="font-display text-[24px] leading-none font-semibold text-ink-950 tabular">
                     {project.progress}%
                   </span>
@@ -70,13 +70,13 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
 
               <div className="survey-rule mt-5 grid grid-cols-2 gap-x-8 gap-y-1 sm:grid-cols-4">
                 {[
-                  ["Contract value", naira(project.budget)],
-                  ["Disbursed", `${naira(project.spent)} · ${util}%`],
-                  ["Variance", `${variance > 0 ? "+" : ""}${variance} pts`],
+                  ["Budget", naira(project.budget)],
+                  ["Paid so far", `${naira(project.spent)} · ${util}%`],
+                  ["Difference", `${variance > 0 ? "+" : ""}${variance}%`],
                   [
-                    "Forecast",
+                    "Schedule",
                     project.forecastSlip > 0
-                      ? `+${project.forecastSlip} days`
+                      ? `${project.forecastSlip} days late`
                       : project.forecastSlip < 0
                         ? `${Math.abs(project.forecastSlip)} days ahead`
                         : "On schedule",
@@ -104,7 +104,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
                 <div className="flex gap-3">
                   <AlertTriangle className="mt-0.5 size-4 shrink-0 text-ochre-600" strokeWidth={1.75} />
                   <div>
-                    <SurveyLabel>Risk signal</SurveyLabel>
+                    <SurveyLabel>Watch out for</SurveyLabel>
                     <p className="mt-1.5 text-[13.5px] leading-relaxed text-ink-800">{project.risk}</p>
                   </div>
                 </div>
@@ -113,17 +113,17 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
 
             <Card>
               <CardHead
-                title="Site evidence"
-                note={`${shots.length} images on file · ${accepted.length} accepted${
-                  flagged.length ? ` · ${flagged.length} failed verification` : ""
+                title="Photos from the site"
+                note={`${shots.length} photos · ${accepted.length} approved${
+                  flagged.length ? ` · ${flagged.length} flagged` : ""
                 }`}
               />
               <div className="p-5">
                 {shots.length === 0 ? (
                   <EmptyState
                     icon={<Images className="size-4" />}
-                    title="No evidence submitted"
-                    body="Field capture has not yet returned images for this contract."
+                    title="No photos yet"
+                    body="No one has uploaded site photos for this project yet."
                   />
                 ) : (
                   <Gallery
@@ -139,38 +139,38 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
           {/* Record column */}
           <div className="space-y-3">
             <Card className="p-5">
-              <SurveyLabel className="mb-3">Contract record</SurveyLabel>
-              <DataRow label="Reference" value={project.id} />
+              <SurveyLabel className="mb-3">Project details</SurveyLabel>
+              <DataRow label="Project ID" value={project.id} />
               <DataRow label="Contractor" value={project.contractor} mono={false} />
               <DataRow label="Region" value={project.region} mono={false} />
-              <DataRow label="Asset type" value={project.mode} mono={false} />
-              <DataRow label="Position" value={coords(project.lat, project.lng)} />
-              <DataRow label="Commenced" value={shortDate(project.startedAt)} />
+              <DataRow label="Type" value={project.mode} mono={false} />
+              <DataRow label="Location" value={coords(project.lat, project.lng)} />
+              <DataRow label="Started" value={shortDate(project.startedAt)} />
               <DataRow label="Due" value={shortDate(project.dueAt)} />
             </Card>
 
             <Card className="p-5">
-              <SurveyLabel className="mb-3">Disbursement</SurveyLabel>
+              <SurveyLabel className="mb-3">Payments</SurveyLabel>
               <div className="mb-4">
                 <div className="mb-1.5 flex items-baseline justify-between">
-                  <span className="text-[12.5px] text-ink-600">Released</span>
+                  <span className="text-[12.5px] text-ink-600">Paid so far</span>
                   <span className="font-mono text-[12.5px] text-ink-900 tabular">{util}%</span>
                 </div>
                 <Meter value={util} tone="ink" />
               </div>
-              <DataRow label="Baseline" value={naira(project.budget)} />
-              <DataRow label="Released" value={naira(project.spent)} />
+              <DataRow label="Budget" value={naira(project.budget)} />
+              <DataRow label="Paid" value={naira(project.spent)} />
               <DataRow label="Remaining" value={naira(project.budget - project.spent)} />
               <DataRow
-                label="Variance"
-                value={`${variance > 0 ? "+" : ""}${variance} pts`}
+                label="Difference"
+                value={`${variance > 0 ? "+" : ""}${variance}%`}
                 tone={Math.abs(variance) > 8 ? "text-rust-600 font-medium" : undefined}
               />
               <p className="mt-4 border-t border-line pt-3 text-[12px] leading-relaxed text-ink-500">
-                {accepted.length} of {shots.length} images accepted
+                {accepted.length} of {shots.length} photos approved
                 {flagged.length
-                  ? `. ${flagged.length} excluded from the certified claim pending adjudication.`
-                  : ". No outstanding verification findings."}
+                  ? `. ${flagged.length} still need a decision before they count toward payment.`
+                  : ". All photos have been checked."}
               </p>
             </Card>
           </div>

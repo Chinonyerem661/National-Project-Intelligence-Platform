@@ -15,9 +15,9 @@ import {
 const NAV = [
   { href: "/", label: "Overview", icon: Gauge },
   { href: "/projects", label: "Projects", icon: Building2 },
-  { href: "/evidence", label: "Evidence", icon: Images },
-  { href: "/budget", label: "Disbursement", icon: Wallet },
-  { href: "/admin", label: "Administration", icon: Settings2 },
+  { href: "/evidence", label: "Photos", icon: Images },
+  { href: "/budget", label: "Payments", icon: Wallet },
+  { href: "/admin", label: "Settings", icon: Settings2 },
 ];
 
 export function Sidebar({ flagged }: { flagged: number }) {
@@ -27,7 +27,7 @@ export function Sidebar({ flagged }: { flagged: number }) {
     <aside className="fixed inset-y-0 left-0 z-30 hidden w-58 flex-col border-r border-ink-800 bg-ink-950 lg:flex">
       <div className="border-b border-ink-800 px-5 py-5">
         <div className="flex items-center gap-2.5">
-          <span className="flex size-7 items-center justify-center rounded-sm bg-moss-600">
+          <span className="flex size-7 items-center justify-center rounded-xl bg-moss-600">
             <ShieldCheck className="size-4 text-white" strokeWidth={2} />
           </span>
           <div className="leading-none">
@@ -55,7 +55,7 @@ export function Sidebar({ flagged }: { flagged: number }) {
                   href={item.href}
                   aria-current={active ? "page" : undefined}
                   className={clsx(
-                    "group flex items-center gap-2.5 rounded-sm px-3 py-2.25 text-[13px] transition-colors",
+                    "group flex items-center gap-2.5 rounded-xl px-3 py-2.25 text-[13px] transition-colors",
                     active
                       ? "bg-ink-800 text-white"
                       : "text-ink-400 hover:bg-ink-900 hover:text-ink-200",
@@ -82,11 +82,11 @@ export function Sidebar({ flagged }: { flagged: number }) {
             <span className="relative inline-flex size-1.5 rounded-full bg-moss-500" />
           </span>
           <span className="font-mono text-[10px] tracking-[0.09em] text-ink-400 uppercase">
-            Systems nominal
+            Everything&apos;s up to date
           </span>
         </div>
         <p className="mt-2 font-mono text-[10px] leading-relaxed text-ink-600">
-          Evidence store synced
+          Photos last backed up
           <br />
           15 Aug 2026 · 09:00 WAT
         </p>

@@ -35,7 +35,7 @@ const plexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   title: "MoT National Project Intelligence Platform",
   description:
-    "Portfolio oversight, site evidence verification and disbursement control for national transport infrastructure.",
+    "See how national transport projects are going, backed by photos from the site and where the money's going.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -43,6 +43,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <html lang="en-NG" className={`${fraunces.variable} ${publicSans.variable} ${plexMono.variable}`}>
+      <head>
+        {/* Photo placeholders come from an external CDN until real site
+            photography is dropped into public/evidence — opening the
+            connection early shaves the DNS/TLS handshake off the first
+            image request on every page. */}
+        <link rel="preconnect" href="https://loremflickr.com" />
+        <link rel="dns-prefetch" href="https://loremflickr.com" />
+      </head>
       <body>
         <Sidebar flagged={flagged} />
         <div className="lg:pl-58">{children}</div>

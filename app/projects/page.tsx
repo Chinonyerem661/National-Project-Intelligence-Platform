@@ -15,7 +15,7 @@ import { naira, pct, relative } from "@/lib/format";
 export default function ProjectsPage() {
   return (
     <>
-      <Topbar eyebrow="Portfolio" title="Contracts in delivery" />
+      <Topbar eyebrow="Projects" title="Every project, and how it's going" />
 
       <main className="px-6 py-7 lg:px-9">
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
@@ -38,6 +38,8 @@ export default function ProjectsPage() {
                         alt={`${cover.stage} at ${cover.location}`}
                         className="size-full transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                         sizes="(max-width: 768px) 100vw, 33vw"
+                        width={640}
+                        height={360}
                       />
                     ) : null}
                     <div className="scrim pointer-events-none absolute inset-x-0 bottom-0 h-3/4" />
@@ -73,7 +75,7 @@ export default function ProjectsPage() {
 
                     <div className="mt-4">
                       <div className="mb-1.5 flex items-baseline justify-between">
-                        <SurveyLabel>Physical progress</SurveyLabel>
+                        <SurveyLabel>Work completed</SurveyLabel>
                         <span className="font-mono text-[13px] font-medium text-ink-900 tabular">
                           {p.progress}%
                         </span>
@@ -83,9 +85,9 @@ export default function ProjectsPage() {
 
                     <dl className="survey-rule mt-4 grid grid-cols-3 gap-3">
                       {[
-                        ["Value", naira(p.budget)],
-                        ["Disbursed", `${util}%`],
-                        ["Variance", `${variance > 0 ? "+" : ""}${variance} pts`],
+                        ["Budget", naira(p.budget)],
+                        ["Paid so far", `${util}%`],
+                        ["Difference", `${variance > 0 ? "+" : ""}${variance}%`],
                       ].map(([k, v], i) => (
                         <div key={k}>
                           <dt className="survey-label">{k}</dt>

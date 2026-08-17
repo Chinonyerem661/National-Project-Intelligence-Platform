@@ -14,15 +14,41 @@ import type { SceneId } from "@/lib/types";
  * 404 for a missing local file resolves faster than hydration, so an onError
  * handler on the rendered element arrives too late to catch it. Swap to
  * next/image once photography is finalised locally.
+ *
+ * Local and remote are probed in parallel rather than in sequence — the local
+ * file almost never exists yet, so waiting out its 404 before even starting
+ * the remote fetch was adding a full extra round trip to every photo on the
+ * page. Results are cached per scene+size for the life of the tab, so the
+ * same photo appearing in a card and a gallery only fetches once. A timeout
+ * keeps one slow CDN response from leaving a tile spinning indefinitely.
  */
+const resolveCache = new Map<string, string | "exhausted">();
+const REMOTE_TIMEOUT_MS = 6000;
+
+function probe(url: string, timeoutMs?: number): Promise<boolean> {
+  return new Promise((resolve) => {
+    const img = new window.Image();
+    let settled = false;
+    const finish = (ok: boolean) => {
+      if (settled) return;
+      settled = true;
+      resolve(ok);
+    };
+    img.onload = () => finish(true);
+    img.onerror = () => finish(false);
+    img.src = url;
+    if (timeoutMs) setTimeout(() => finish(false), timeoutMs);
+  });
+}
+
 export function EvidenceImage({
   scene,
   alt,
   className,
   sizes,
   priority,
-  width = 1600,
-  height = 1067,
+  width = 800,
+  height = 534,
 }: {
   scene: SceneId;
   alt: string;
@@ -33,35 +59,38 @@ export function EvidenceImage({
   height?: number;
 }) {
   const source = PHOTO_SOURCES[scene];
-  const chain = [localUrl(scene), remoteUrl(scene, width, height)];
-  const [resolved, setResolved] = useState<string | null | "exhausted">(null);
+  const cacheKey = `${scene}:${width}x${height}`;
+  const [resolved, setResolved] = useState<string | null | "exhausted">(
+    () => resolveCache.get(cacheKey) ?? null,
+  );
 
   useEffect(() => {
+    const cached = resolveCache.get(cacheKey);
+    if (cached) {
+      setResolved(cached);
+      return;
+    }
+
     let cancelled = false;
     setResolved(null);
 
-    (async () => {
-      for (const url of chain) {
-        const ok = await new Promise<boolean>((resolve) => {
-          const probe = new window.Image();
-          probe.onload = () => resolve(true);
-          probe.onerror = () => resolve(false);
-          probe.src = url;
-        });
+    const local = localUrl(scene);
+    const remote = remoteUrl(scene, width, height);
+
+    Promise.all([probe(local), probe(remote, REMOTE_TIMEOUT_MS)]).then(
+      ([localOk, remoteOk]) => {
         if (cancelled) return;
-        if (ok) {
-          setResolved(url);
-          return;
-        }
-      }
-      if (!cancelled) setResolved("exhausted");
-    })();
+        const result = localOk ? local : remoteOk ? remote : "exhausted";
+        resolveCache.set(cacheKey, result);
+        setResolved(result);
+      },
+    );
 
     return () => {
       cancelled = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scene, width, height]);
+  }, [cacheKey, scene, width, height]);
 
   if (resolved === "exhausted") {
     return (

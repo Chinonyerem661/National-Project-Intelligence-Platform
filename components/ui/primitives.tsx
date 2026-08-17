@@ -13,7 +13,7 @@ export function Card({
 }) {
   return (
     <Tag
-      className={clsx("rounded-sm border border-line bg-surface shadow-(--shadow-card)", className)}
+      className={clsx("rounded-xl border border-line bg-surface shadow-(--shadow-card)", className)}
     >
       {children}
     </Tag>
@@ -110,7 +110,7 @@ export function Tag({ children, tone = "neutral" }: { children: ReactNode; tone?
   return (
     <span
       className={clsx(
-        "inline-flex items-center rounded-[3px] border px-1.5 py-0.5 font-mono text-[10px] tracking-[0.08em] uppercase",
+        "inline-flex items-center rounded-full border px-1.5 py-0.5 font-mono text-[10px] tracking-[0.08em] uppercase",
         tones[tone],
       )}
     >
@@ -141,7 +141,7 @@ export function Stat({
 
   return (
     <Card className="p-5">
-      <div className={clsx("mb-4 h-0.75 w-7 rounded-[1px]", rule)} />
+      <div className={clsx("mb-4 h-0.75 w-7 rounded-full", rule)} />
       <SurveyLabel>{label}</SurveyLabel>
       <p className="mt-2.5 font-display text-[27px] leading-none font-semibold tracking-[-0.008em] text-ink-950 tabular">
         {value}

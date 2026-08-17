@@ -44,7 +44,7 @@ export function PhotoCard({
     <button
       type="button"
       onClick={() => onOpen(photo)}
-      className="group block w-full overflow-hidden rounded-sm border border-line bg-surface text-left shadow-(--shadow-card) transition-colors hover:border-line-strong"
+      className="group block w-full overflow-hidden rounded-xl border border-line bg-surface text-left shadow-(--shadow-card) transition-colors hover:border-line-strong"
     >
       <div className="relative overflow-hidden bg-ink-900" style={{ aspectRatio: ratio }}>
         <EvidenceImage
@@ -52,6 +52,8 @@ export function PhotoCard({
           alt={`${photo.stage} at ${photo.location}`}
           className="size-full transition-transform duration-600 ease-out group-hover:scale-[1.03]"
           sizes="(max-width: 768px) 50vw, 25vw"
+          width={480}
+          height={360}
         />
         <div className="scrim pointer-events-none absolute inset-x-0 bottom-0 h-2/3" />
         <div className="absolute top-3 left-3">
@@ -151,10 +153,10 @@ export function PhotoInspector({
       onClick={onClose}
       role="dialog"
       aria-modal="true"
-      aria-label={`Evidence ${photo.id}`}
+      aria-label={`Photo ${photo.id}`}
     >
       <div
-        className="grid max-h-[92vh] w-full max-w-6xl grid-cols-1 overflow-hidden rounded-[5px] bg-surface shadow-(--shadow-raised) lg:grid-cols-[1.55fr_1fr]"
+        className="grid max-h-[92vh] w-full max-w-6xl grid-cols-1 overflow-hidden rounded-2xl bg-surface shadow-(--shadow-raised) lg:grid-cols-[1.55fr_1fr]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Plate */}
@@ -163,6 +165,8 @@ export function PhotoInspector({
             scene={photo.scene}
             alt={`${photo.stage} at ${photo.location}`}
             className="max-h-[60vh] w-full lg:max-h-[92vh]"
+            width={1400}
+            height={933}
             priority
           />
           <div className="pointer-events-none absolute inset-x-0 bottom-0 p-5">
@@ -218,7 +222,7 @@ export function PhotoInspector({
               type="button"
               onClick={onClose}
               aria-label="Close"
-              className="-mt-1 -mr-2 rounded p-2 text-ink-400 transition hover:bg-paper hover:text-ink-800"
+              className="-mt-1 -mr-2 rounded-lg p-2 text-ink-400 transition hover:bg-paper hover:text-ink-800"
             >
               <X className="size-4" />
             </button>
@@ -238,7 +242,7 @@ export function PhotoInspector({
             {photo.finding ? (
               <div
                 className={clsx(
-                  "mb-5 rounded-[5px] border-l-[3px] px-4 py-3",
+                  "mb-5 rounded-xl border-l-[3px] px-4 py-3",
                   verdict === "flagged"
                     ? "border-l-rust-500 bg-rust-50"
                     : "border-l-ochre-500 bg-ochre-50",
@@ -246,48 +250,48 @@ export function PhotoInspector({
               >
                 <span className="font-mono text-[10px] tracking-[0.11em] uppercase">
                   <span className={verdict === "flagged" ? "text-rust-600" : "text-ochre-600"}>
-                    Verification finding
+                    What we found
                   </span>
                 </span>
                 <p className="mt-1.5 text-[12.5px] leading-relaxed text-ink-800">{photo.finding}</p>
                 {photo.duplicateOf ? (
                   <p className="mt-2 font-mono text-[11px] text-ink-500">
-                    Matched against {photo.duplicateOf}
+                    Looks the same as photo {photo.duplicateOf}
                   </p>
                 ) : null}
               </div>
             ) : null}
 
             <div className="survey-rule mb-5">
-              <span className="survey-label mb-2 block">Automated checks</span>
-              <CheckLine ok={photo.hasExif} label="Capture metadata intact" />
+              <span className="survey-label mb-2 block">Automatic checks</span>
+              <CheckLine ok={photo.hasExif} label="Photo details weren't tampered with" />
               <CheckLine ok={photo.capturedInApp} label="Taken with the in-app camera" />
-              <CheckLine ok={photo.insideGeofence} label="Inside the corridor geofence" />
-              <CheckLine ok={photo.withinPeriod} label="Within the claimed reporting period" />
-              <CheckLine ok={!photo.duplicateOf} label="No duplicate match in the portfolio" />
+              <CheckLine ok={photo.insideGeofence} label="Taken at the project site" />
+              <CheckLine ok={photo.withinPeriod} label="Taken at a believable time" />
+              <CheckLine ok={!photo.duplicateOf} label="Not a repeat of another photo" />
             </div>
 
             <div className="survey-rule">
-              <span className="survey-label mb-2.5 block">Record</span>
+              <span className="survey-label mb-2.5 block">Details</span>
               <dl className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-2.5 text-[12.5px]">
-                <Field icon={<MapPin className="size-3" />} label="Coordinates">
+                <Field icon={<MapPin className="size-3" />} label="Location">
                   <span className={photo.insideGeofence ? "" : "text-rust-600"}>
                     {coords(photo.lat, photo.lng)}
                   </span>
                 </Field>
-                <Field icon={<Camera className="size-3" />} label="Captured">
+                <Field icon={<Camera className="size-3" />} label="Taken">
                   {dateTime(photo.capturedAt)}
                 </Field>
                 <Field icon={<Images className="size-3" />} label="Uploaded">
                   {dateTime(photo.uploadedAt)}
                 </Field>
-                <Field icon={<Fingerprint className="size-3" />} label="Uploader">
+                <Field icon={<Fingerprint className="size-3" />} label="Uploaded by">
                   {photo.uploader}
                 </Field>
                 <Field icon={<Smartphone className="size-3" />} label="Device">
                   {photo.device}
                 </Field>
-                <Field icon={<Images className="size-3" />} label="File">
+                <Field icon={<Images className="size-3" />} label="File size">
                   {megabytes(photo.bytes)}
                 </Field>
               </dl>
@@ -299,23 +303,23 @@ export function PhotoInspector({
               <button
                 type="button"
                 onClick={() => onDecide(photo, "approved")}
-                className="flex-1 rounded-sm bg-moss-600 px-4 py-2.5 text-[13px] font-medium text-white transition hover:bg-moss-700"
+                className="flex-1 rounded-xl bg-moss-600 px-4 py-2.5 text-[13px] font-medium text-white transition hover:bg-moss-700"
               >
-                Accept evidence
+                Approve photo
               </button>
               <button
                 type="button"
                 onClick={() => onDecide(photo, "rejected")}
-                className="flex-1 rounded-sm border border-line-strong bg-surface px-4 py-2.5 text-[13px] font-medium text-rust-600 transition hover:border-rust-500/40 hover:bg-rust-50"
+                className="flex-1 rounded-xl border border-line-strong bg-surface px-4 py-2.5 text-[13px] font-medium text-rust-600 transition hover:border-rust-500/40 hover:bg-rust-50"
               >
                 Reject
               </button>
               <button
                 type="button"
                 onClick={() => onDecide(photo, "release")}
-                className="w-full rounded-sm border border-line px-4 py-2.5 text-[13px] text-ink-700 transition hover:bg-surface"
+                className="w-full rounded-xl border border-line px-4 py-2.5 text-[13px] text-ink-700 transition hover:bg-surface"
               >
-                {photo.publicRelease ? "Withdraw from public portal" : "Release to public portal"}
+                {photo.publicRelease ? "Hide from the public" : "Show to the public"}
               </button>
             </div>
           ) : null}

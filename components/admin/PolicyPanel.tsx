@@ -39,23 +39,23 @@ function Switch({
 const RULES: { key: keyof CapturePolicy; label: string; note: string }[] = [
   {
     key: "requireInApp",
-    label: "Require in-app camera capture",
-    note: "Blocks gallery uploads for progress and hidden-works evidence.",
+    label: "Only allow photos taken in the app",
+    note: "Stops people uploading old photos from their gallery instead of taking a new one.",
   },
   {
     key: "duplicateDetection",
-    label: "Perceptual duplicate detection",
-    note: "Flags images already submitted against any contract in the portfolio.",
+    label: "Catch repeated photos automatically",
+    note: "Flags a photo if it's already been submitted for any project.",
   },
   {
     key: "hiddenWorksGate",
-    label: "Hidden-works gate",
-    note: "Blocks the next milestone claim until covering-stage evidence exists.",
+    label: "Require proof before paying for hidden work",
+    note: "Blocks the next payment claim until there's a photo proving the work underneath is done.",
   },
   {
     key: "publicReleaseRequiresApproval",
-    label: "Manual approval for public release",
-    note: "No image reaches the transparency portal without an explicit decision.",
+    label: "A person must approve photos before they go public",
+    note: "No photo is shown to the public without someone explicitly deciding to share it.",
   },
 ];
 
@@ -68,20 +68,20 @@ export function PolicyPanel({ policy: initial }: { policy: CapturePolicy }) {
   return (
     <Card>
       <CardHead
-        title="Evidence capture rules"
-        note="Applied to every field device on next sync. Every change is written to the audit trail."
+        title="Rules for photos from the field"
+        note="These apply to every phone the next time it connects. Changes are saved automatically."
       />
 
       <div className="grid gap-5 border-b border-line p-5 sm:grid-cols-2">
         <div>
           <div className="mb-1 flex items-baseline justify-between">
-            <SurveyLabel>Geofence radius</SurveyLabel>
+            <SurveyLabel>How close photos must be to the site</SurveyLabel>
             <span className="font-mono text-[13px] font-medium text-ink-900 tabular">
               {policy.geofenceRadius} m
             </span>
           </div>
           <p className="mb-3 text-[12.5px] leading-relaxed text-ink-500">
-            Distance from the corridor centreline within which capture is accepted.
+            Photos taken further than this from the project are held for a manual check.
           </p>
           <input
             type="range"
@@ -90,20 +90,20 @@ export function PolicyPanel({ policy: initial }: { policy: CapturePolicy }) {
             step={50}
             value={policy.geofenceRadius}
             onChange={(e) => set("geofenceRadius", Number(e.target.value))}
-            aria-label="Geofence radius in metres"
+            aria-label="Maximum distance from the site in metres"
             className="w-full accent-moss-600"
           />
         </div>
 
         <div>
           <div className="mb-1 flex items-baseline justify-between">
-            <SurveyLabel>Maximum capture age</SurveyLabel>
+            <SurveyLabel>How old a photo can be</SurveyLabel>
             <span className="font-mono text-[13px] font-medium text-ink-900 tabular">
               {policy.maxCaptureAgeDays} days
             </span>
           </div>
           <p className="mb-3 text-[12.5px] leading-relaxed text-ink-500">
-            Older images are held for review rather than accepted automatically.
+            Older photos are held for a manual check rather than accepted automatically.
           </p>
           <input
             type="range"

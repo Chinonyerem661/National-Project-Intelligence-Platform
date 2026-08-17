@@ -50,24 +50,24 @@ export default function OverviewPage() {
 
   return (
     <>
-      <Topbar eyebrow="Portfolio · August 2026" title="National delivery overview" />
+      <Topbar eyebrow="Overview · August 2026" title="Projects at a glance" />
 
       {/* Statement band — the editorial beat before the instrument panel */}
       <section className="border-b border-ink-800 bg-ink-950 px-6 py-9 lg:px-9">
         <span className="survey-label text-ink-500">MoT · National Project Intelligence Platform</span>
         <h2 className="mt-2.5 max-w-3xl font-display text-[28px] leading-[1.2] font-semibold tracking-[-0.008em] text-white sm:text-[34px]">
-          <span className="rounded-xs bg-moss-500/20 px-1.5 py-0.5">{naira(value)}</span> under active
-          delivery across {PROJECTS.length} federal contracts
+          <span className="rounded-md bg-moss-500/25 px-1.5 py-0.5">{naira(value)}</span> is currently
+          being invested in {PROJECTS.length} projects across the country
         </h2>
         <p className="mt-3 max-w-xl text-[13.5px] leading-relaxed text-ink-400">
-          Every disbursement is tied to site evidence captured, verified and reconciled against the
-          physical progress it claims.
+          Every payment is backed by photos from the site, checked and matched against the work
+          that&apos;s actually been done.
         </p>
         <div className="mt-6 flex flex-wrap items-center gap-x-8 gap-y-3 border-t border-ink-800 pt-5">
           {[
-            ["Disbursed to date", `${pct(disbursed, value)}%`],
-            ["Evidence on file", String(PHOTOS.length)],
-            ["Awaiting adjudication", String(flagged.length)],
+            ["Paid out so far", `${pct(disbursed, value)}%`],
+            ["Photos collected", String(PHOTOS.length)],
+            ["Waiting on a decision", String(flagged.length)],
           ].map(([k, v]) => (
             <div key={k}>
               <span className="font-mono text-[9.5px] tracking-[0.12em] text-ink-500 uppercase">{k}</span>
@@ -81,26 +81,26 @@ export default function OverviewPage() {
         {/* Measures */}
         <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
           <Stat
-            label="Contracts in delivery"
+            label="Projects underway"
             value={String(PROJECTS.length)}
-            detail={`${attention.length} require ministry attention`}
+            detail={`${attention.length} need a closer look`}
           />
           <Stat
-            label="Portfolio value"
+            label="Total budget"
             value={naira(value)}
-            detail={`${pct(disbursed, value)}% disbursed to date`}
+            detail={`${pct(disbursed, value)}% paid out so far`}
             accent="ink"
           />
           <Stat
-            label="Evidence on file"
+            label="Photos collected"
             value={String(PHOTOS.length)}
-            detail={`${verified.length} images cleared verification`}
+            detail={`${verified.length} photos checked and approved`}
             accent="moss"
           />
           <Stat
-            label="Failed verification"
+            label="Flagged photos"
             value={String(flagged.length)}
-            detail="Awaiting adjudication"
+            detail="Waiting on a decision"
             accent={flagged.length > 0 ? "rust" : "moss"}
           />
         </section>
@@ -110,13 +110,13 @@ export default function OverviewPage() {
           <div className="mb-3.5 flex items-end justify-between gap-4">
             <div>
               <SurveyLabel>From the field</SurveyLabel>
-              <h2 className="mt-1.5 text-[17px]">Most recent verified evidence</h2>
+              <h2 className="mt-1.5 text-[17px]">Latest photos from the site</h2>
             </div>
             <Link
               href="/evidence"
               className="group inline-flex items-center gap-1 text-[12.5px] text-ink-600 transition hover:text-moss-600"
             >
-              All evidence
+              See all photos
               <ArrowUpRight className="size-3.5 transition-transform group-hover:translate-x-px group-hover:-translate-y-px" />
             </Link>
           </div>
@@ -125,7 +125,7 @@ export default function OverviewPage() {
             {lead ? (
               <Link
                 href={`/projects/${lead.projectId}`}
-                className="group relative block overflow-hidden rounded-sm border border-line bg-ink-950 shadow-(--shadow-raised)"
+                className="group relative block overflow-hidden rounded-xl border border-line bg-ink-950 shadow-(--shadow-raised)"
               >
                 <div className="relative aspect-16/10 lg:aspect-video">
                   <EvidenceImage
@@ -133,6 +133,8 @@ export default function OverviewPage() {
                     alt={`${lead.stage} at ${lead.location}`}
                     className="size-full transition-transform duration-900 ease-out group-hover:scale-[1.025]"
                     sizes="(max-width: 1024px) 100vw, 55vw"
+                    width={1100}
+                    height={733}
                     priority
                   />
                   <div className="scrim absolute inset-0" />
@@ -153,9 +155,9 @@ export default function OverviewPage() {
                   </p>
                   <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-white/15 pt-3">
                     {[
-                      ["Contract", names[lead.projectId]],
-                      ["Position", coords(lead.lat, lead.lng)],
-                      ["Captured", shortDate(lead.capturedAt)],
+                      ["Project", names[lead.projectId]],
+                      ["Location", coords(lead.lat, lead.lng)],
+                      ["Taken", shortDate(lead.capturedAt)],
                     ].map(([k, v]) => (
                       <div key={k}>
                         <span className="font-mono text-[9px] tracking-[0.12em] text-white/40 uppercase">
@@ -185,8 +187,8 @@ export default function OverviewPage() {
         <section className="mt-8 grid gap-3 lg:grid-cols-[1.35fr_1fr]">
           <Card>
             <CardHead
-              title="Delivery by region"
-              note="Contract count and status distribution across the portfolio"
+              title="Projects by region"
+              note="How many projects are in each region, and how they're doing"
             />
             <div className="divide-y divide-line">
               {byRegion.map((r) => {
@@ -196,7 +198,7 @@ export default function OverviewPage() {
                     <div className="mb-2.5 flex items-baseline justify-between gap-4">
                       <span className="text-[13.5px] font-medium text-ink-900">{r.region}</span>
                       <span className="font-mono text-[11.5px] text-ink-500 tabular">
-                        {r.count} contract{r.count === 1 ? "" : "s"} · {naira(r.value)}
+                        {r.count} project{r.count === 1 ? "" : "s"} · {naira(r.value)}
                       </span>
                     </div>
                     <div className="flex h-1.5 gap-0.5 overflow-hidden rounded-full">
@@ -232,7 +234,7 @@ export default function OverviewPage() {
           </Card>
 
           <Card>
-            <CardHead title="Requires attention" note="Ranked by forecast schedule impact" />
+            <CardHead title="Needs attention" note="Projects furthest behind schedule, listed first" />
             <div className="divide-y divide-line">
               {attention
                 .slice()
@@ -251,7 +253,7 @@ export default function OverviewPage() {
                         </p>
                       </div>
                       <span className="shrink-0 font-mono text-[12px] font-medium text-rust-600 tabular">
-                        +{p.forecastSlip}d
+                        {p.forecastSlip} days late
                       </span>
                     </div>
                     {p.risk ? (
@@ -271,10 +273,10 @@ export default function OverviewPage() {
                 <AlertTriangle className="size-4 shrink-0 text-rust-600" strokeWidth={1.75} />
                 <div className="min-w-0 flex-1">
                   <p className="text-[13px] font-medium text-ink-900">
-                    {flagged.length} images failed verification
+                    {flagged.length} photos need a decision
                   </p>
                   <p className="mt-0.5 text-[12px] text-ink-500">
-                    Geofence, duplication and metadata findings pending adjudication
+                    Some may be duplicates, taken off-site, or missing details — take a look
                   </p>
                 </div>
                 <ArrowUpRight className="size-4 shrink-0 text-rust-600" />
@@ -287,14 +289,14 @@ export default function OverviewPage() {
         <section className="mt-8">
           <Card>
             <CardHead
-              title="Disbursement against physical progress"
-              note="Variance is the difference between money released and work evidenced"
+              title="Money paid vs. work done"
+              note="Shows whether payments are ahead of, or behind, the work confirmed on site"
               action={
                 <Link
                   href="/budget"
                   className="inline-flex items-center gap-1 text-[12.5px] text-ink-600 transition hover:text-moss-600"
                 >
-                  Full ledger <ArrowUpRight className="size-3.5" />
+                  See all payments <ArrowUpRight className="size-3.5" />
                 </Link>
               }
             />
@@ -302,7 +304,7 @@ export default function OverviewPage() {
               <table className="w-full min-w-190 text-left">
                 <thead>
                   <tr className="border-b border-line">
-                    {["Contract", "Status", "Progress", "Disbursed", "Variance", "Evidence"].map(
+                    {["Project", "Status", "Work done", "Paid", "Difference", "Photos"].map(
                       (h, i) => (
                         <th
                           key={h}
@@ -358,7 +360,7 @@ export default function OverviewPage() {
                           }`}
                         >
                           {variance > 0 ? "+" : ""}
-                          {variance} pts
+                          {variance}%
                         </td>
                         <td className="px-5 py-3.5 text-right">
                           <span className="inline-flex items-center gap-1.5 font-mono text-[12px] tabular">
@@ -383,7 +385,7 @@ export default function OverviewPage() {
             Federal Ministry of Transportation · National Project Intelligence Platform
           </span>
           <span className="font-mono text-[10px] tracking-[0.09em] text-ink-400 uppercase tabular">
-            Data as at {relative(PROJECTS[1].updatedAt)}
+            Updated {relative(PROJECTS[1].updatedAt)}
           </span>
         </footer>
       </main>
